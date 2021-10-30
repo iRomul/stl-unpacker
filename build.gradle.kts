@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "io.github.iromul.utils"
-version = "1.1-SNAPSHOT"
+version = "0.1"
 
 java {
     targetCompatibility = JavaVersion.VERSION_1_8
