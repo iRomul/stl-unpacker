@@ -2,15 +2,17 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     application
-    kotlin("jvm") version "1.5.31"
+    kotlin("jvm") version libs.versions.kotlin
     id("com.github.johnrengelman.shadow") version "7.1.0"
     id("edu.sc.seis.launch4j") version "2.5.1"
 }
 
-group = "io.github.iromul.utils"
-version = "0.1"
-
 java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
@@ -48,6 +50,7 @@ launch4j {
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
-    implementation("com.github.ajalt.clikt:clikt:3.3.0")
+    implementation(libs.kotlin.stdlib.jdk7)
+    implementation(libs.kotlin.stdlib.jdk8)
+    implementation(libs.clikt)
 }
