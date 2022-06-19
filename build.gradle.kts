@@ -7,13 +7,18 @@ plugins {
     id("edu.sc.seis.launch4j") version "2.5.1"
 }
 
+repositories {
+    mavenCentral()
+}
+
+application {
+    mainClass.set("io.github.iromul.diy.tools.stlunpacker.Stl_unpackerKt")
+}
+
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(8))
     }
-
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 tasks.withType<KotlinCompile> {
@@ -22,23 +27,22 @@ tasks.withType<KotlinCompile> {
     }
 }
 
-application {
-    mainClass.set("io.github.iromul.utils.stlunpacker.Stl_unpackerKt")
-}
-
-repositories {
-    mavenCentral()
+tasks.withType<Test> {
+    useJUnitPlatform()
+    maxParallelForks = (Runtime.getRuntime().availableProcessors() / 2).takeIf { it > 0 } ?: 1
+    reports.html.required.set(false)
+    reports.junitXml.required.set(false)
 }
 
 tasks.shadowJar {
     manifest {
-        attributes("Main-Class" to "io.github.iromul.utils.stlunpacker.Stl_unpackerKt")
+        attributes("Main-Class" to "io.github.iromul.diy.tools.stlunpacker.Stl_unpackerKt")
     }
 }
 
 launch4j {
     outfile = "stlunpacker.exe"
-    mainClassName = "io.github.iromul.utils.stlunpacker.Stl_unpackerKt"
+    mainClassName = "io.github.iromul.diy.tools.stlunpacker.Stl_unpackerKt"
     icon = "$projectDir/icons/gear_win_multi.ico"
     fileDescription = "Simple zip unpack utility for stl files"
     copyConfigurable = emptyList<Any?>()
@@ -50,7 +54,13 @@ launch4j {
 }
 
 dependencies {
+    implementation(libs.clikt)
+    implementation(libs.jsoup)
+    implementation(libs.kotlin.logging)
+    implementation(libs.kotlin.stdlib)
     implementation(libs.kotlin.stdlib.jdk7)
     implementation(libs.kotlin.stdlib.jdk8)
-    implementation(libs.clikt)
+    implementation(libs.ktor.client.apache)
+    implementation(libs.slf4j.simple)
+    testImplementation(libs.junit.jupiter)
 }
